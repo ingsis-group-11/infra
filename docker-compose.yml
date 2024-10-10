@@ -1,6 +1,6 @@
 services:
   snippet-manager:
-    image: ghcr.io/TomasSerra/snippet-service:latest
+    image: ghcr.io/ingsis-group-11/snippet-manager:latest
     ports:
       - "8000:8080"
     depends_on:
@@ -18,11 +18,11 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
   printscript-service:
-    image: ghcr.io/TomasSerra/printscript-service:latest
+    image: ghcr.io/ingsis-group-11/printscript-service:latest
     ports:
       - "8004:8080"
-  permissions-manager:
-    image: ghcr.io/TomasSerra/permissions-manager:latest
+  permission-manager:
+    image: ghcr.io/ingsis-group-11/permission-manager:latest
     ports:
       - "8003:8080"
     depends_on:

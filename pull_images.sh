@@ -18,7 +18,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Haciendo docker-compose pull..."
-docker compose pull snippet-manager printscript-service permissions-manager
+docker compose pull snippet-manager permissions-manager printscript-service
 
 if [ $? -ne 0 ]; then
   echo "Error: No se pudieron traer las imágenes."
