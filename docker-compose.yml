@@ -6,7 +6,7 @@ services:
     depends_on:
       - db-snippet
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/snippet-manager-db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-snippet:5432/snippet-manager-db
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
   db-snippet:
@@ -28,7 +28,7 @@ services:
     depends_on:
       - db-permissions
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/permission-manager-db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-permissions:5432/permission-manager-db
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
   db-permissions:
