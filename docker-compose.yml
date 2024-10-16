@@ -1,4 +1,7 @@
+version: '3.8'
+
 services:
+  # Application services
   snippet-manager:
     image: ghcr.io/ingsis-group-11/snippet-manager:latest
     ports:
@@ -9,18 +12,21 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-snippet:5432/snippet-manager-db
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
-  db-snippet:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=snippet-manager-db
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
+      - PERMISSION_MANAGER_URL=http://permission-manager:8080
+      - PRINTSCRIPT_SERVICE_URL=http://printscript-service:8080
+    networks:
+      - app-network
+
   printscript-service:
     image: ghcr.io/ingsis-group-11/printscript-service:latest
     ports:
       - "8004:8080"
+    environment:
+      - SNIPPET_MANAGER_URL=http://snippet-manager:8080
+      - PERMISSION_MANAGER_URL=http://permission-manager:8080
+    networks:
+      - app-network
+
   permission-manager:
     image: ghcr.io/ingsis-group-11/permission-manager:latest
     ports:
@@ -31,6 +37,12 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-permissions:5432/permission-manager-db
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
+      - SNIPPET_MANAGER_URL=http://snippet-manager:8080
+      - PRINTSCRIPT_SERVICE_URL=http://printscript-service:8080
+    networks:
+      - app-network
+
+  # Database services
   db-permissions:
     image: postgres:latest
     ports:
@@ -39,5 +51,29 @@ services:
       - POSTGRES_DB=permission-manager-db
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
+    networks:
+      - app-network
+    volumes:
+      - postgres_data_permissions:/var/lib/postgresql/data
+
+  db-snippet:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=snippet-manager-db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    networks:
+      - app-network
+    volumes:
+      - postgres_data_snippet:/var/lib/postgresql/data
+
+# Other configurations
 volumes:
-  postgres_data:
+  postgres_data_snippet:
+  postgres_data_permissions:
+
+networks:
+  app-network:
+    driver: bridge
