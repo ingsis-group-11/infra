@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # Application services
   snippet-manager:
-    image: ghcr.io/ingsis-group-11/snippet-manager:latest
+    image: ghcr.io/ingsis-group-11/snippet-manager:${IMAGE_TAG}
     ports:
       - "8000:8080"
     depends_on:
@@ -18,7 +18,7 @@ services:
       - app-network
 
   printscript-service:
-    image: ghcr.io/ingsis-group-11/printscript-service:latest
+    image: ghcr.io/ingsis-group-11/printscript-service:${IMAGE_TAG}
     ports:
       - "8004:8080"
     environment:
@@ -28,7 +28,7 @@ services:
       - app-network
 
   permission-manager:
-    image: ghcr.io/ingsis-group-11/permission-manager:latest
+    image: ghcr.io/ingsis-group-11/permission-manager:${IMAGE_TAG}
     ports:
       - "8003:8080"
     depends_on:
