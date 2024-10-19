@@ -12,7 +12,7 @@ if [ -z "$GHCR_PAT" ]; then
 fi
 
 echo "Autenticating in ghcr.io..."
-echo "$GHCR_PAT" | sudo docker login ghcr.io -u "$GHCR_USER" --password-stdin
+echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
 
 if [ $? -ne 0 ]; then
   echo "Error: Can not authenticate in ghcr.io."

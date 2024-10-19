@@ -42,6 +42,16 @@ services:
     networks:
       - app-network
 
+  asset-service:
+    container_name: "asset_service"
+    image: ghcr.io/austral-ingsis/snippet-asset-service:latest
+    ports:
+      - "8080:8080"
+    environment:
+      AZURE_HOST: "http://azurite"
+      NEW_RELIC_APP_NAME: "asset-service"
+      NEW_RELIC_AGENT_ENABLED: false
+
   # Database services
   db-permissions:
     image: postgres:latest
@@ -69,10 +79,23 @@ services:
     volumes:
       - postgres_data_snippet:/var/lib/postgresql/data
 
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: "azurite"
+    hostname: azurite
+    restart: always
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+    volumes:
+      - blob:/workspace
+
 # Other configurations
 volumes:
   postgres_data_snippet:
   postgres_data_permissions:
+  blob:
 
 networks:
   app-network:
