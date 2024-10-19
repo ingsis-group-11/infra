@@ -20,7 +20,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Docker-compose pull..."
-docker compose pull snippet-manager permission-manager printscript-service
+docker compose pull snippet-manager permission-manager printscript-service asset-service
 
 if [ $? -ne 0 ]; then
   echo "Error: Can not pull images."
