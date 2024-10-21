@@ -12,10 +12,12 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - PERMISSION_MANAGER_URL=http://permission-manager:8080
       - PRINTSCRIPT_SERVICE_URL=http://printscript-service:8080
+      - ASSET_MANAGER_URL=http://asset-service:8080
       - AUTH0_AUDIENCE=https://printscript.com
       - AUTH_SERVER_URI=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
       - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
       - AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
+      - DOCKER_PORT=8080
     networks:
       - app-network
 
@@ -30,6 +32,7 @@ services:
       - AUTH_SERVER_URI=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
       - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
       - AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
+      - DOCKER_PORT=8080
     secrets:
       - gpr_token
       - gpr_user
@@ -52,6 +55,7 @@ services:
       - AUTH_SERVER_URI=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
       - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
       - AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
+      - DOCKER_PORT=8080
     networks:
       - app-network
 
@@ -83,7 +87,6 @@ services:
       - postgres_data_snippet:/var/lib/postgresql/data
 
   asset-service:
-    container_name: asset-service-api
     image: ghcr.io/austral-ingsis/snippet-asset-service:latest
     ports:
       - "8082:8080"
@@ -91,10 +94,14 @@ services:
       AZURE_HOST: "http://azurite"
       NEW_RELIC_APP_NAME: "asset-service"
       NEW_RELIC_AGENT_ENABLED: false
+    depends_on:
+      - azurite
+    networks:
+      - app-network
 
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite
-    container_name: azurite-snippet-manager
+    container_name: azurite-snippet-manager-infra
     hostname: azurite
     restart: always
     ports:
@@ -103,6 +110,8 @@ services:
       - "10002:10002"
     volumes:
       - blob:/workspace
+    networks:
+      - app-network
 
 # Other configurations
 secrets:
