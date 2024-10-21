@@ -1,7 +1,7 @@
 services:
   # Application services
   snippet-manager:
-    image: ghcr.io/ingsis-group-11/snippet-manager:latest
+    image: ghcr.io/ingsis-group-11/snippet-manager:${IMAGE_TAG}
     ports:
       - "8000:8080"
     depends_on:
@@ -22,7 +22,7 @@ services:
       - app-network
 
   printscript-service:
-    image: ghcr.io/ingsis-group-11/printscript-service:latest
+    image: ghcr.io/ingsis-group-11/printscript-service:${IMAGE_TAG}
     ports:
       - "8004:8080"
     environment:
@@ -40,7 +40,7 @@ services:
       - app-network
 
   permission-manager:
-    image: ghcr.io/ingsis-group-11/permission-manager:latest
+    image: ghcr.io/ingsis-group-11/permission-manager:${IMAGE_TAG}
     ports:
       - "8003:8080"
     depends_on:
@@ -58,6 +58,16 @@ services:
       - DOCKER_PORT=8080
     networks:
       - app-network
+
+  asset-service:
+    container_name: "asset_service"
+    image: ghcr.io/austral-ingsis/snippet-asset-service:latest
+    ports:
+      - "8080:8080"
+    environment:
+      AZURE_HOST: "http://azurite"
+      NEW_RELIC_APP_NAME: "asset-service"
+      NEW_RELIC_AGENT_ENABLED: false
 
   # Database services
   db-permissions:
@@ -101,7 +111,6 @@ services:
 
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite
-    container_name: azurite-snippet-manager-infra
     hostname: azurite
     restart: always
     ports:
