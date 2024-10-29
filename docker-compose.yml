@@ -1,9 +1,23 @@
 services:
   # Application services
+  proxy:
+    container_name: "reverse-proxy"
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./static/:/usr/share/nginx/html:ro
+      - ./conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - snippet-manager
+      - printscript-service
+      - permission-manager
+      - asset-service
+    networks:
+      - app-network
+      
   snippet-manager:
     image: ghcr.io/ingsis-group-11/snippet-manager:${IMAGE_TAG}
-    ports:
-      - "8000:8080"
     depends_on:
       - db-snippet
     environment:
@@ -23,8 +37,6 @@ services:
 
   printscript-service:
     image: ghcr.io/ingsis-group-11/printscript-service:${IMAGE_TAG}
-    ports:
-      - "8004:8080"
     environment:
       - SNIPPET_MANAGER_URL=http://snippet-manager:8080
       - PERMISSION_MANAGER_URL=http://permission-manager:8080
@@ -33,16 +45,11 @@ services:
       - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
       - AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
       - DOCKER_PORT=8080
-    secrets:
-      - gpr_token
-      - gpr_user
     networks:
       - app-network
 
   permission-manager:
     image: ghcr.io/ingsis-group-11/permission-manager:${IMAGE_TAG}
-    ports:
-      - "8003:8080"
     depends_on:
       - db-permissions
     environment:
@@ -113,12 +120,6 @@ services:
       - app-network
 
 # Other configurations
-secrets:
-  gpr_token:
-    environment: GHCR_PAT
-  gpr_user:
-    environment: GIT_USER
-
 volumes:
   postgres_data_snippet:
   postgres_data_permissions:
