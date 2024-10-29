@@ -4,7 +4,7 @@ services:
     container_name: "reverse-proxy"
     image: nginx
     ports:
-      - 80:80
+      - 8080:80
     volumes:
       - ./static/:/usr/share/nginx/html:ro
       - ./conf.d:/etc/nginx/conf.d:ro
