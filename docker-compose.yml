@@ -14,7 +14,7 @@ services:
       - snippet-manager
       - printscript-service
       - permission-manager
-      - asset-service-infra
+      - asset-service
     networks:
       - app-network
       
