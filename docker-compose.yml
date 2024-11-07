@@ -10,7 +10,6 @@ services:
       - ./static/:/usr/share/nginx/html:ro
       - ./conf.d/nginx-${ENVIRONMENT}.conf:/etc/nginx/conf.d/default.conf
       - /etc/letsencrypt:/etc/letsencrypt:ro
-
     depends_on:
       - snippet-manager
       - printscript-service
@@ -38,7 +37,7 @@ services:
     networks:
       - app-network
 
-  printscript-service:
+  printscript-service-infra:
     image: ghcr.io/ingsis-group-11/printscript-service:${IMAGE_TAG}
     environment:
       - SNIPPET_MANAGER_URL=http://snippet-manager:8080
@@ -51,7 +50,7 @@ services:
     networks:
       - app-network
 
-  permission-manager:
+  permission-manager-infra:
     image: ghcr.io/ingsis-group-11/permission-manager:${IMAGE_TAG}
     depends_on:
       - db-permissions
