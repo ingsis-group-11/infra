@@ -37,7 +37,7 @@ services:
     networks:
       - app-network
 
-  printscript-service-infra:
+  printscript-service:
     image: ghcr.io/ingsis-group-11/printscript-service:${IMAGE_TAG}
     environment:
       - SNIPPET_MANAGER_URL=http://snippet-manager:8080
@@ -50,7 +50,7 @@ services:
     networks:
       - app-network
 
-  permission-manager-infra:
+  permission-manager:
     image: ghcr.io/ingsis-group-11/permission-manager:${IMAGE_TAG}
     depends_on:
       - db-permissions
