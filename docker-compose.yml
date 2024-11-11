@@ -58,6 +58,7 @@ services:
     depends_on:
       - redis
     environment:
+      - ASSET_MANAGER_URL=http://asset-service:8080
       - SNIPPET_MANAGER_URL=http://snippet-manager:8080
       - PERMISSION_MANAGER_URL=http://permission-manager:8080
       - REDIS_HOST=redis
@@ -136,8 +137,6 @@ services:
   asset-service:
     container_name: "asset-service"
     image: ghcr.io/austral-ingsis/snippet-asset-service:latest
-    ports:
-      - "8082:8080"
     environment:
       AZURE_HOST: "http://azurite"
       NEW_RELIC_APP_NAME: "asset-service"
