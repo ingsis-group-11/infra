@@ -139,11 +139,20 @@ services:
     networks:
       - app-network
 
+  redis:
+    container_name: snippet-manager-redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
 # Other configurations
 volumes:
   postgres_data_snippet:
   postgres_data_permissions:
   blob:
+  redisdata:
   frontend:
 
 networks:
