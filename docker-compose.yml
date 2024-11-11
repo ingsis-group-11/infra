@@ -27,6 +27,8 @@ services:
       - "6379:6379"
     volumes:
       - redisdata:/data
+    networks:
+      - app-network
 
   snippet-manager:
     container_name: "snippet-manager"
@@ -40,6 +42,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - PERMISSION_MANAGER_URL=http://permission-manager:8080
       - PRINTSCRIPT_SERVICE_URL=http://printscript-service:8080
+      - REDIS_HOST:redis
       - ASSET_MANAGER_URL=http://asset-service:8080
       - AUTH0_AUDIENCE=https://printscript.com
       - AUTH_SERVER_URI=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
@@ -57,6 +60,7 @@ services:
     environment:
       - SNIPPET_MANAGER_URL=http://snippet-manager:8080
       - PERMISSION_MANAGER_URL=http://permission-manager:8080
+      - REDIS_HOST:redis
       - AUTH0_AUDIENCE=https://printscript.com
       - AUTH_SERVER_URI=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
       - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
