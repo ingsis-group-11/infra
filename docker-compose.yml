@@ -91,6 +91,7 @@ services:
       - app-network
 
   frontend:
+    container_name: "frontend"
     image: ghcr.io/ingsis-group-11/printscript-ui:${IMAGE_TAG}
     environment:
       - VITE_SNIPPET_MANAGER_URL=https://printscript-dev.brazilsouth.cloudapp.azure.com/snippet-manager/api
