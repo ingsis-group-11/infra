@@ -41,8 +41,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - PERMISSION_MANAGER_URL=http://permission-manager:8080
       - PRINTSCRIPT_SERVICE_URL=http://printscript-service:8080
-      - SPRING_DATA_REDIS_HOST:redis
-      - SPRING_DATA_REDIS_PORT:6379
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
       - ASSET_MANAGER_URL=http://asset-service:8080
       - AUTH0_AUDIENCE=https://printscript.com
       - AUTH_SERVER_URI=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
@@ -60,8 +60,8 @@ services:
     environment:
       - SNIPPET_MANAGER_URL=http://snippet-manager:8080
       - PERMISSION_MANAGER_URL=http://permission-manager:8080
-      - REDIS_HOST:redis
-      - REDIS_PORT:6379
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
       - AUTH0_AUDIENCE=https://printscript.com
       - AUTH_SERVER_URI=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
       - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
