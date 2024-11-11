@@ -16,14 +16,24 @@ services:
       - printscript-service
       - permission-manager
       - asset-service
+      - frontend
     networks:
       - app-network
-      
+
+  redis:
+    container_name: snippet-manager-redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
   snippet-manager:
     container_name: "snippet-manager"
     image: ghcr.io/ingsis-group-11/snippet-manager:${IMAGE_TAG}
     depends_on:
       - db-snippet
+      - redis
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-snippet:5432/snippet-manager-db
       - SPRING_DATASOURCE_USERNAME=admin
@@ -42,6 +52,8 @@ services:
   printscript-service:
     container_name: "printscript-service"
     image: ghcr.io/ingsis-group-11/printscript-service:${IMAGE_TAG}
+    depends_on:
+      - redis
     environment:
       - SNIPPET_MANAGER_URL=http://snippet-manager:8080
       - PERMISSION_MANAGER_URL=http://permission-manager:8080
@@ -58,6 +70,7 @@ services:
     image: ghcr.io/ingsis-group-11/permission-manager:${IMAGE_TAG}
     depends_on:
       - db-permissions
+      - redis
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-permissions:5432/permission-manager-db
       - SPRING_DATASOURCE_USERNAME=admin
@@ -138,14 +151,6 @@ services:
       - blob:/workspace
     networks:
       - app-network
-
-  redis:
-    container_name: snippet-manager-redis
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    volumes:
-      - redisdata:/data
 
 # Other configurations
 volumes:
