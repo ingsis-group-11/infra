@@ -8,7 +8,7 @@ services:
       - 443:443
     volumes:
       - ./static/:/usr/share/nginx/html:ro
-      - ./conf.d/nginx-dev.conf:/etc/nginx/conf.d/default.conf
+      - ./conf.d/nginx-${ENVIRONMENT}.conf:/etc/nginx/conf.d/default.conf
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - frontend:/usr/share/nginx/html
     depends_on:
@@ -100,6 +100,8 @@ services:
       - VITE_AUTH0_DOMAIN=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
       - VITE_AUTH0_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
       - VITE_AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
+    ports:
+      - "4173:4173"
     networks:
       - app-network
 
