@@ -144,6 +144,7 @@ volumes:
   postgres_data_snippet:
   postgres_data_permissions:
   blob:
+  frontend:
 
 networks:
   app-network:
