@@ -71,6 +71,9 @@ services:
       - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
       - AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
       - DOCKER_PORT=8080
+      - NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}
+      - NEW_RELIC_APP_NAME='printscript-service-app'
+      - NEW_RELIC_LOG_EXTENSION_ADD_MDC=true
     networks:
       - app-network
 
@@ -91,6 +94,9 @@ services:
       - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
       - AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
       - DOCKER_PORT=8080
+      - NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}
+      - NEW_RELIC_APP_NAME='permission-manager-app'
+      - NEW_RELIC_LOG_EXTENSION_ADD_MDC=true
     networks:
       - app-network
 
