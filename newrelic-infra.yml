@@ -1,0 +1,8 @@
+license_key: ${NEW_RELIC_LICENSE_KEY}
+
+forwarding:
+  context_data:
+    enabled: true
+
+enable_process_metrics: true
+verbose: 1
