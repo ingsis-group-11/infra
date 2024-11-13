@@ -1,0 +1,55 @@
+name: Deploy Service
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+    secrets:
+      VM_PROD_IP:
+        required: true
+      VM_DEV_IP:
+        required: true
+      VM_USER:
+        required: true
+      SSH_PRIVATE_KEY_PROD:
+        required: true
+      SSH_PRIVATE_KEY_DEV:
+        required: true
+
+jobs:
+  pull-to-vms:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add PEM Key to SSH Agent
+        env:
+          PEM_KEY: ${{ inputs.environment == 'prod' && secrets.SSH_PRIVATE_KEY_PROD || secrets.SSH_PRIVATE_KEY_DEV }}
+        run: |
+          echo "$PEM_KEY" > vm_key.pem
+          chmod 600 vm_key.pem
+          eval "$(ssh-agent -s)"
+          ssh-add vm_key.pem
+
+      - name: Pull updates on VM
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ inputs.environment == 'prod' && secrets.VM_PROD_IP || secrets.VM_DEV_IP }}
+          username: ${{ secrets.VM_USER }}
+          script: |
+            cd printScript/infra
+            git pull origin main
+            sudo docker compose down
+            sudo docker compose up --pull always --build -d
+
+      - name: Cleanup PEM Key
+        if: always()
+        run: |
+          if [ -n "$SSH_AGENT_PID" ]; then
+            ssh-agent -k
+          fi
+          rm -f vm_key.pem
