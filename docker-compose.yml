@@ -45,7 +45,7 @@ services:
       - SPRING_DATA_REDIS_PORT=6379
       - ASSET_MANAGER_URL=http://asset-service:8080
       - AUTH0_AUDIENCE=https://printscript.com
-      - AUTH_SERVER_URI=https:${AUTH0_DOMAIN}
+      - AUTH_SERVER_URI=${AUTH0_DOMAIN}
       - AUTH_CLIENT_ID=${AUTH0_CLIENT_ID}
       - AUTH_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
       - DOCKER_PORT=8080
