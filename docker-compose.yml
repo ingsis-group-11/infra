@@ -45,9 +45,9 @@ services:
       - SPRING_DATA_REDIS_PORT=6379
       - ASSET_MANAGER_URL=http://asset-service:8080
       - AUTH0_AUDIENCE=https://printscript.com
-      - AUTH_SERVER_URI=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
-      - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
-      - AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
+      - AUTH_SERVER_URI=https:${AUTH0_DOMAIN}
+      - AUTH_CLIENT_ID=${AUTH0_CLIENT_ID}
+      - AUTH_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
       - DOCKER_PORT=8080
       - NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}
       - NEW_RELIC_APP_NAME='snippet-manager-app'
@@ -67,9 +67,9 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - AUTH0_AUDIENCE=https://printscript.com
-      - AUTH_SERVER_URI=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
-      - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
-      - AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
+      - AUTH_SERVER_URI=${AUTH0_DOMAIN}
+      - AUTH_CLIENT_ID=${AUTH0_CLIENT_ID}
+      - AUTH_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
       - DOCKER_PORT=8080
       - NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}
       - NEW_RELIC_APP_NAME='printscript-service-app'
@@ -90,9 +90,9 @@ services:
       - SNIPPET_MANAGER_URL=http://snippet-manager:8080
       - PRINTSCRIPT_SERVICE_URL=http://printscript-service:8080
       - AUTH0_AUDIENCE=https://printscript.com
-      - AUTH_SERVER_URI=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
-      - AUTH_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
-      - AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
+      - AUTH_SERVER_URI=${AUTH0_DOMAIN}
+      - AUTH_CLIENT_ID=${AUTH0_CLIENT_ID}
+      - AUTH_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
       - DOCKER_PORT=8080
       - NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}
       - NEW_RELIC_APP_NAME='permission-manager-app'
@@ -108,9 +108,9 @@ services:
       - VITE_PERMISSION_MANAGER_URL=https://printscript-dev.brazilsouth.cloudapp.azure.com/permission-manager/api/permission
       - VITE_PRINTSCRIPT_SERVICE_URL=https://printscript-dev.brazilsouth.cloudapp.azure.com/printscript-service/api/
       - VITE_AUTH0_AUDIENCE=https://printscript.com
-      - VITE_AUTH0_DOMAIN=https://dev-zljhtjva3ftqlrz7.us.auth0.com/
-      - VITE_AUTH0_CLIENT_ID=0iZoTXdEtVcwJGDVKwwHkCV6hVEEHUmu
-      - VITE_AUTH_CLIENT_SECRET=CY1qSG-FT7CAnDlUiooTnlu64cWPWo1tqK-kR2p9B0ujpJc5avuvft3AWi4-0Kgb
+      - VITE_AUTH0_DOMAIN=${AUTH0_DOMAIN}
+      - VITE_AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}
+      - VITE_AUTH_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
     ports:
       - "4173:4173"
     networks:
