@@ -23,10 +23,12 @@ jobs:
   pull-to-vms:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Add PEM Key to SSH Agent
+      # Step 2: Add PEM Key to SSH Agent (conditionally for prod or dev)
+      - name: Add PEM Key to SSH Agent (Production)
         env:
           PEM_KEY: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
         if: inputs.environment == 'prod'
@@ -36,7 +38,7 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add vm_key.pem
 
-      - name: Add PEM Key to SSH Agent
+      - name: Add PEM Key to SSH Agent (Development)
         env:
           PEM_KEY: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
         if: inputs.environment != 'prod'
@@ -46,6 +48,21 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add vm_key.pem
 
+      # Step 3: Generate .env file from .bashrc on VM
+      - name: Generate .env File from .bashrc
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ inputs.environment == 'prod' && secrets.VM_PROD_IP || secrets.VM_DEV_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ inputs.environment == 'prod' && secrets.SSH_PRIVATE_KEY_PROD || secrets.SSH_PRIVATE_KEY_DEV }}
+          script: |
+            # Source .bashrc to load the environment variables
+            source ~/.bashrc
+
+            # Generate a .env file in the Docker Compose directory
+            env | grep -E "GHCR_PAT|ENVIRONMENT|IMAGE_TAG|NEW_RELIC_LICENSE_KEY|AUTH0_" > ~/printScript/infra/.env
+
+      # Step 4: Pull updates and restart services with Docker Compose
       - name: Pull updates on VM (Production)
         uses: appleboy/ssh-action@v1.1.0
         if: inputs.environment == 'prod'
@@ -54,11 +71,10 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
           script: |
-            cd printScript/infra
-            source ~/.bashrc
+            cd ~/printScript/infra
             git pull origin main
-            sudo docker compose down
-            sudo docker compose up --pull always --build -d
+            docker compose --env-file .env down
+            docker compose --env-file .env up --pull always --build -d
 
       - name: Pull updates on VM (Development)
         uses: appleboy/ssh-action@v1.1.0
@@ -68,12 +84,12 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
           script: |
-            cd printScript/infra
-            source ~/.bashrc
+            cd ~/printScript/infra
             git pull origin main
-            sudo docker compose down
-            sudo docker compose up --pull always --build -d
+            docker compose --env-file .env down
+            docker compose --env-file .env up --pull always --build -d
 
+      # Step 5: Cleanup PEM Key
       - name: Cleanup PEM Key
         if: always()
         run: |
