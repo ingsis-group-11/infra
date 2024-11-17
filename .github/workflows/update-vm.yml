@@ -57,7 +57,7 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
           script: |
-            cd ~/projects/ingdesist/infra
+            cd printScript/infra
             git pull origin main
             docker compose --env-file .env.prod down
             docker compose --env-file .env.prod up --pull always --build -d
@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
           script: |
-            cd ~/projects/ingdesist/infra
+            cd printScript/infra
             git pull origin main
             docker compose --env-file .env.dev down
             docker compose --env-file .env.dev up --pull always --build -d
