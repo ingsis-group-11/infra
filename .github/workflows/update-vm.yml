@@ -30,7 +30,7 @@ jobs:
         env:
           PEM_KEY: ${{ inputs.environment == 'prod' && secrets.SSH_PRIVATE_KEY_PROD || secrets.SSH_PRIVATE_KEY_DEV }}
         run: |
-          echo "$PEM_KEY" | sed 's/ /\n/g' > vm_key.pem
+          echo "$PEM_KEY" > vm_key.pem
           chmod 600 vm_key.pem
           eval "$(ssh-agent -s)"
           ssh-add vm_key.pem
