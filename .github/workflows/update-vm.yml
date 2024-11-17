@@ -26,20 +26,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Add PEM Key to SSH Agent
-        env:
-          PEM_KEY: ${{ inputs.environment == 'prod' && secrets.SSH_PRIVATE_KEY_PROD || secrets.SSH_PRIVATE_KEY_DEV }}
-        run: |
-          echo "$PEM_KEY" > vm_key.pem
-          chmod 600 vm_key.pem
-          eval "$(ssh-agent -s)"
-          ssh-add vm_key.pem
-
       - name: Pull updates on VM
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ inputs.environment == 'prod' && secrets.VM_PROD_IP || secrets.VM_DEV_IP }}
           username: ${{ secrets.VM_USER }}
+          key: ${{ inputs.environment == 'prod' && secrets.SSH_PRIVATE_KEY_PROD || secrets.SSH_PRIVATE_KEY_DEV }}
           script: |
             cd printScript/infra
             git pull origin main
